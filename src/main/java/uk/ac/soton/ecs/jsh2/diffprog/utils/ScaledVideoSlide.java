@@ -58,6 +58,7 @@ public class ScaledVideoSlide implements Slide {
 	private URL url;
 	private EndAction endAction;
 	private VideoDisplay<MBFImage> display;
+	private boolean loop;
 
 	/**
 	 * Construct with the given video and {@link EndAction}
@@ -66,7 +67,7 @@ public class ScaledVideoSlide implements Slide {
 	 * @param endAction
 	 * @throws IOException
 	 */
-	public ScaledVideoSlide(URL url, EndAction endAction) throws IOException {
+	public ScaledVideoSlide(URL url, boolean loop, EndAction endAction) throws IOException {
 		if (url.getProtocol().startsWith("jar")) {
 			final File tmp = File.createTempFile("movie", ".tmp");
 			tmp.deleteOnExit();
@@ -76,6 +77,7 @@ public class ScaledVideoSlide implements Slide {
 
 		this.url = url;
 		this.endAction = endAction;
+		this.loop = loop;
 	}
 
 	@Override
@@ -96,7 +98,7 @@ public class ScaledVideoSlide implements Slide {
 		base.add(ic);
 
 		try {
-			final XuggleVideo video = new XuggleVideo(this.url, true);
+			final XuggleVideo video = new XuggleVideo(this.url, this.loop);
 
 			display = new VideoDisplay<MBFImage>(video, ic);
 			display.setEndAction(this.endAction);

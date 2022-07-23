@@ -31,6 +31,8 @@ public class App {
 		final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		final Dimension size = device.getDefaultConfiguration().getBounds().getSize();
 
+		// if (size.width >= 1680)
+		// 	SLIDE_WIDTH = 1680;
 		if (size.width >= 1920)
 			SLIDE_WIDTH = 1920;
 		else
@@ -56,7 +58,7 @@ public class App {
 						"javelin(theta=0.1, gamma=0.001)")));
 
 		slides.set(55, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 55)),
-				new ScaledVideoSlide(App.class.getResource("alphastar.mp4"), EndAction.CLOSE_AT_END)));
+				new ScaledVideoSlide(App.class.getResource("alphastar.mp4"), true, EndAction.CLOSE_AT_END)));
 
 		try {
 			final FaceNetDemo fn = new FaceNetDemo("FaceTime");
@@ -69,7 +71,7 @@ public class App {
 		}
 
 		slides.set(62, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 55)),
-				new ScaledVideoSlide(App.class.getResource("animation.mp4"), EndAction.CLOSE_AT_END)));
+				new ScaledVideoSlide(App.class.getResource("animation.mp4"), false, EndAction.CLOSE_AT_END)));
 
 		new SlideshowApplication(slides, SLIDE_WIDTH, SLIDE_HEIGHT, getBackground());
 	}
