@@ -50,27 +50,27 @@ public class App {
 	public static void main(String[] args) throws IOException {
 		final List<Slide> slides = new ArrayList<Slide>();
 
-		for (int i = 0; i <= 65; i++)
+		for (int i = 0; i <= 58; i++)
 			slides.add(new PictureSlide(App.class.getResource(String.format("slides/%04d.png", i))));
 
 		slides.set(30, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 30)),
 				new JythonREPLConsoleSlide(JSplitPane.HORIZONTAL_SPLIT, App.class.getResource("javelin.py"),
 						"javelin(theta=0.1, gamma=0.001)")));
 
-		slides.set(55, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 55)),
+		slides.set(50, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 50)),
 				new ScaledVideoSlide(App.class.getResource("alphastar.mp4"), true, EndAction.CLOSE_AT_END)));
 
 		try {
-			final FaceNetDemo fn = new FaceNetDemo("FaceTime");
-			slides.set(59, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 59)), fn));
+			// final FaceNetDemo fn = new FaceNetDemo("FaceTime");
+			// slides.set(59, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 59)), fn));
 
 			final RetinaNetDemo rn = new RetinaNetDemo("FaceTime");
-			slides.set(57, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 57)), rn));
+			slides.set(52, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 52)), rn));
 		} catch (final Exception e) {
 			// ignore; probably haven't got python configured
 		}
 
-		slides.set(62, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 55)),
+		slides.set(55, new WrapperSlide(App.class.getResource(String.format("slides/%04d.png", 55)),
 				new ScaledVideoSlide(App.class.getResource("animation.mp4"), false, EndAction.CLOSE_AT_END)));
 
 		new SlideshowApplication(slides, SLIDE_WIDTH, SLIDE_HEIGHT, getBackground());

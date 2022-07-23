@@ -22,6 +22,7 @@
 \pgfplotsset{compat=1.13}
 \usetikzlibrary{arrows, automata}
 
+
 \newcommand{\dif}[1]{\ensuremath{\operatorname{d}\!{#1}}}
 
 \usetheme{Copenhagen}
@@ -97,7 +98,7 @@
 	\item<2-> For an arbitrary real-valued function, $f(a)$, we can approximate the derivative, $f'(a)$ using the gradient of the \emph{secant line} defined by $(a,f(a))$ and a point a small distance, $h$, away $(a+h,f(a+h))$: $f'(a) \approx \frac{f(a+h) - f(a)}{h}$.
 	\begin{itemize}
 		\setlength\itemsep{2mm}
-		\item<3-> This expression is \textit{Newton's Difference Quotient}.
+		\item<3-> This expression is \textit{Newton's Quotient}.
 		\item<4-> As $h$ becomes smaller, the approximated derivative becomes more accurate. 
 		\item<5-> If we take the limit as $h \to 0$, then we have an exact expression for the derivative: $\frac{df}{da} = f'(a) = \lim_{h\to0} \frac{f(a+h) - f(a)}{h}$.
 	\end{itemize}
@@ -121,7 +122,10 @@
 		ymax=4  
 	]
 	
-	\only<1-3>{\addplot[color=red]{x-0.75};}
+	\only<1>{\addplot[color=black]{x-0.75};}
+	\only<1>{\draw[color=red] (axis cs:3,2.25) -- node[right]{$\dif y$} (axis cs:3,1);}
+	\only<1>{\draw[color=red] (axis cs:1.75,1) -- node[below]{$\dif x$} (axis cs:3,1);}
+	\only<2-3>{\addplot[color=red]{x-0.75};}
 	\only<2->{\addplot[]{0.25*x^2};}
 	\only<2->{\node[pin={95:{$f(a)$}},circle,fill,inner sep=2pt,blue] at (axis cs:1,0.25) {};}
 	\only<2-3>{\node[pin={110:{$f(a+h)$}},circle,fill,inner sep=2pt,blue] at (axis cs:3,2.25) {};}
@@ -274,7 +278,7 @@
 \begin{column}{0.65\textwidth}
 
 \begin{itemize}
-	\item<+-> How can you numerically estimate the value of the parameter that minimises a loss function, $\ell$?
+	\item<+-> How can you numerically estimate the value of the parameter $\theta$ that minimises a loss function, $\ell(\theta)$?
 	\item<+-> Really intuitive idea: starting from an initial guess, $\theta_0$, take small steps in the direction of the negative gradient.
 \end{itemize}
 
@@ -346,7 +350,7 @@ where $\gamma$ is the \emph{learning rate}
 		\item<1-> In many real applications it can be \emph{millions} of parameters.
 	\end{itemize}
 	\item<2-> Partial derivatives $\frac{\partial f}{\partial x_i}$ let us compute the gradient of the $i$-th parameter by holding the other parameters constant.
-	\item<3-> In general, the partial derivative of a function $f(x_1,\dots,x_n)$ at a point $(a_1,\dots,a_n)$ is given by: $\frac{\partial f}{\partial x_i}(a_1,\dots,a_n) = \lim_{h\to0}\frac{f(a_1\dots,a_i+h,\dots,a_n)-f(a_1\dots,a_i,\dots,a_n)}{h}$.
+	% \item<3-> In general, the partial derivative of a function $f(x_1,\dots,x_n)$ at a point $(a_1,\dots,a_n)$ is given by: $\frac{\partial f}{\partial x_i}(a_1,\dots,a_n) = \lim_{h\to0}\frac{f(a_1\dots,a_i+h,\dots,a_n)-f(a_1\dots,a_i,\dots,a_n)}{h}$.
 \end{itemize}
 \end{frame}
 
@@ -445,23 +449,23 @@ for i in range(3):
 \end{frame}
 
 
-\begin{frame}
-\frametitle{Do I really have to do the differentiation manually?}
+% \begin{frame}
+% \frametitle{Do I really have to do the differentiation manually?}
 
-\begin{itemize}
-	\item There are three ways to perform differentiation:
-	\begin{itemize}
-		\item<+-> analytically;
-		\item<+-> numerically;
-		\item<+-> automatically.
-	\end{itemize}
-\end{itemize}
+% \begin{itemize}
+% 	\item There are three ways to perform differentiation:
+% 	\begin{itemize}
+% 		\item<+-> analytically;
+% 		\item<+-> numerically;
+% 		\item<+-> automatically.
+% 	\end{itemize}
+% \end{itemize}
 
-\begin{block}<+->{}
-Automatic Differentiation is key to differentiating programs with millions of parameters, but as the `programmer' \textbf{you} still need to have a really good intuition and understanding of what the implications of composing many functions will be on the gradients of the parameters with respect to the loss for optimisation to work successfully.
-\end{block}
+% \begin{block}<+->{}
+% Automatic Differentiation is key to differentiating programs with millions of parameters, but as the `programmer' \textbf{you} still need to have a really good intuition and understanding of what the implications of composing many functions will be on the gradients of the parameters with respect to the loss for optimisation to work successfully.
+% \end{block}
 
-\end{frame}
+% \end{frame}
 
 \begin{frame}
 \frametitle{What kinds of functional building blocks are common?}
@@ -469,9 +473,9 @@ Automatic Differentiation is key to differentiating programs with millions of pa
 \begin{itemize}
 	\item<+-> Today, the most common operations with parameters are:
 		\begin{itemize}
-			\item \emph{Vector addition}: the input vector to a function is added to a vector of weights)
-			\item \emph{Vector-Matrix multiplication}: the input vector to the function is multiplied with a matrix of weights
-			\item \emph{Convolution}: the input vector (or matrix...) is `convolved' with a set of weights
+			\item \emph{Vector addition}: the input vector to a function is added to a vector of weights.
+			\item \emph{Vector-Matrix multiplication}: the input vector to the function is multiplied with a matrix of weights.
+			\item \emph{Convolution}: the input vector (or matrix...) is `convolved' with a set of weights.
 			\item (in all these cases `weights' are the parameters which are learned)
 		\end{itemize}
 	\item<+-> The above operations are \emph{linear}, so they are often combined with element-wise nonlinearities; e.g.:
@@ -495,6 +499,9 @@ Automatic Differentiation is key to differentiating programs with millions of pa
 	\item This is broadly the area of what is called \emph{reinforcement learning}.
 \end{itemize}
 
+\begin{center}
+\includegraphics[width=0.75\textwidth]{pong}
+\end{center}
 \end{frame}
 
 \begin{frame}
@@ -510,6 +517,9 @@ Automatic Differentiation is key to differentiating programs with millions of pa
 	\item With enough \emph{training data} we can learn the parameters required to detect objects in images.
 \end{itemize}
 
+\begin{center}
+\includegraphics[width=0.75\textwidth]{objdet-sets}
+\end{center}
 \end{frame}
 
 \begin{frame}
@@ -518,21 +528,21 @@ Automatic Differentiation is key to differentiating programs with millions of pa
 
 \end{frame}
 
-\begin{frame}
-\frametitle{Face detection and recognition}
+% \begin{frame}
+% \frametitle{Face detection and recognition}
 
-\begin{itemize}
-	\item Consider a function that takes an image as input and produces an array of \emph{bounding boxes}.
-	\item With enough \emph{training data} we can learn the parameters required to detect faces in images.
-	\item With some clever training tricks (in the loss function) we can also make the function return a feature for each box that describes the content, such that pictures of the same person have very similar features.
-\end{itemize}
+% \begin{itemize}
+% 	\item Consider a function that takes an image as input and produces an array of \emph{bounding boxes}.
+% 	\item With enough \emph{training data} we can learn the parameters required to detect faces in images.
+% 	\item With some clever training tricks (in the loss function) we can also make the function return a feature for each box that describes the content, such that pictures of the same person have very similar features.
+% \end{itemize}
 
-\end{frame}
+% \end{frame}
 
-\begin{frame}
-\frametitle{Face detection and recognition}
-\framesubtitle{Demo}
-\end{frame}
+% \begin{frame}
+% \frametitle{Face detection and recognition}
+% \framesubtitle{Demo}
+% \end{frame}
 
 
 \begin{frame}
